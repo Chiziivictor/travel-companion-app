@@ -1,63 +1,24 @@
-import React, { useState, useEffect } from "react";
-import Loading from "./Loading";
-import Tours from "./Tours";
-// ATTENTION!!!!!!!!!!
-// I SWITCHED TO PERMANENT DOMAIN
-const url = "https://course-api.com/react-tours-project";
+import { CssBaseline, Grid } from "@mui/material";
+import React from "react";
+import Header from "./components/Header/Header";
+import List from "./components/List/List";
+import Map from "./components/Map/Map";
 
-function App() {
-  const [loading, setLoading] = useState(true);
-  const [tours, setTours] = useState([]);
-
-  const removeTour = (id) => {
-    const newTours = tours.filter((tour) => tour.id !== id);
-    setTours(newTours);
-  };
-
-  const fetchTours = async () => {
-    setLoading(true);
-
-    try {
-      const response = await fetch(url);
-      const tours = await response.json();
-      setLoading(false);
-      setTours(tours);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-
-    console.log(tours);
-  };
-
-  useEffect(() => {
-    fetchTours();
-  }, []);
-
-  {
-    loading && (
-      <main>
-        <Loading />
-      </main>
-    );
-  }
-  if (tours.length === 0) {
-    return (
-      <main>
-        <div className="title">
-          <h2>no tours left</h2>
-          <button onClick={fetchTours} className="btn">
-            refresh
-          </button>
-        </div>
-      </main>
-    );
-  }
+const App = () => {
   return (
-    <main>
-      <Tours tours={tours} removeTour={removeTour} />
-    </main>
+    <>
+      <CssBaseline />
+      <Header />
+      <Grid container spacing={3} style={{ width: "100%" }}>
+        <Grid item xs={12} md={4}>
+          <List />
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <Map />
+        </Grid>
+      </Grid>
+    </>
   );
-}
+};
 
 export default App;
